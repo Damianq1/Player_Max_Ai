@@ -35,10 +35,14 @@ android {
 }
 
 dependencies {
-    // ✅ Material BOM - rozwiązuje WSZYSTKIE style errors
-    implementation(platform("com.google.android.material:material-bom:2024.12.01"))
-    implementation("com.google.android.material:material")
-    implementation("androidx.appcompat:appcompat")
-    implementation("androidx.core:core-ktx")
+    // Material Design 3 - stabilna wersja
+    implementation("com.google.android.material:material:1.11.0")
+    
+    // AndroidX
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    
+    // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
 }
