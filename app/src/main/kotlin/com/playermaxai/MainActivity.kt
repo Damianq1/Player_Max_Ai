@@ -26,11 +26,11 @@ import androidx.core.content.getSystemService
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.viewbinding.ViewBinding
+import androidx.viewfindViewById<R.id.ViewBinding
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.playermaxai.core.*
-import com.playermaxai.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import org.videolan.libvlc.*
 import java.util.*
@@ -39,7 +39,7 @@ import kotlin.math.coerceIn
 class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventListener, View.OnFocusChangeListener {
 
     // ViewBinding (szybsze UI)
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var root_view: FrameLayout = ActivityMainBinding
     
     // Core Components (Filar I, IV)
     private lateinit var playerEngine: UltimatePlayerEngine
@@ -72,8 +72,8 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) // #13 StayAwake
         
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        findViewById<R.id.= null
+        setContentView(root_view)
         
         initAllSystems()
         setupUI()
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (!isNetworkAvailable()) {
                     playerEngine.smartReconnect()
-                    binding.statusText.text = getString(R.string.reconnecting)
+                    findViewById<R.id.statusText.text = getString(R.string.reconnecting)
                 }
             }
         }
@@ -131,31 +131,31 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     @SuppressLint("ClickableViewAccessibility")
     private fun setupUI() {
         // Setup Screen (#24)
-        binding.scanButton.setOnClickListener { scanM3U() }
-        binding.urlInput.setText(prefs.getString("last_url", ""))
+        findViewById<R.id.scanButton.setOnClickListener { scanM3U() }
+        findViewById<R.id.urlInput.setText(prefs.getString("last_url", ""))
         
         // Sliders (#85-88)
         setupSliders()
         
         // Channel Navigation (#91)
-        binding.prevChannelBtn.setOnClickListener { switchChannel(-1) }
-        binding.nextChannelBtn.setOnClickListener { switchChannel(1) }
-        binding.menuToggleBtn.setOnClickListener { toggleMenu() }
+        findViewById<R.id.prevChannelBtn.setOnClickListener { switchChannel(-1) }
+        findViewById<R.id.nextChannelBtn.setOnClickListener { switchChannel(1) }
+        findViewById<R.id.menuToggleBtn.setOnClickListener { toggleMenu() }
         
         // Focus Listeners (#32)
-        listOf(binding.prevChannelBtn, binding.nextChannelBtn, binding.menuToggleBtn, 
-               binding.scanButton).forEach { it.onFocusChangeListener = this }
+        listOf(findViewById<R.id.prevChannelBtn, findViewById<R.id.nextChannelBtn, findViewById<R.id.menuToggleBtn, 
+               findViewById<R.id.scanButton).forEach { it.onFocusChangeListener = this }
         
         // Touch handling for gestures (#92)
-        binding.rootContainer.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
+        root_viewContainer.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
     }
 
     private fun setupSliders() {
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         
-        binding.volumeSeekbar.max = maxVolume
-        binding.volumeSeekbar.progress = prefs.getInt("volume", maxVolume / 2)
-        binding.volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        findViewById<R.id.volumeSeekbar.max = maxVolume
+        findViewById<R.id.volumeSeekbar.progress = prefs.getInt("volume", maxVolume / 2)
+        findViewById<R.id.volumeSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0)
                 saveSliderValue("volume", progress)
@@ -165,9 +165,9 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
         })
         
         // Video Filters (#85-87)
-        listOf("brightness" to binding.brightnessSeekbar,
-               "contrast" to binding.contrastSeekbar,
-               "saturation" to binding.saturationSeekbar).forEach { (type, seekbar) ->
+        listOf("brightness" to findViewById<R.id.brightnessSeekbar,
+               "contrast" to findViewById<R.id.contrastSeekbar,
+               "saturation" to findViewById<R.id.saturationSeekbar).forEach { (type, seekbar) ->
             seekbar.max = 200
             seekbar.progress = prefs.getInt("$type-slider", 100)
             seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -183,11 +183,11 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
 
     // FILAR III: M3U Scanning (#41-60)
     private fun scanM3U() {
-        val url = binding.urlInput.text.toString().trim()
+        val url = findViewById<R.id.urlInput.text.toString().trim()
         if (url.isEmpty()) return
         
         prefs.edit().putString("last_url", url).apply()
-        binding.statusText.text = "Skanowanie..."
+        findViewById<R.id.statusText.text = "Skanowanie..."
         hideKeyboard()
         
         lifecycleScope.launch(Dispatchers.IO) {
@@ -198,18 +198,18 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.statusText.text = getString(R.string.scan_error, e.message)
+                    findViewById<R.id.statusText.text = getString(R.string.scan_error, e.message)
                 }
             }
         }
     }
 
     private fun onScanComplete() {
-        binding.statusText.text = getString(R.string.channels_found, channels.size)
+        findViewById<R.id.statusText.text = getString(R.string.channels_found, channels.size)
         Toast.makeText(this, "${channels.size} kanałów", Toast.LENGTH_SHORT).show() // #47
         
         buildChannelList() // #52 Dynamic Button Injector
-        binding.setupScreen.isVisible = false
+        findViewById<R.id.setupScreen.isVisible = false
         showMenu()
         
         if (channels.isNotEmpty()) {
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     }
 
     private fun buildChannelList() {
-        binding.channelList.removeAllViews()
+        findViewById<R.id.channelList.removeAllViews()
         channels.forEachIndexed { index, channel ->
             val button = MaterialButton(this).apply {
                 text = channel.name
@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
                     showOSD(channel.name); true 
                 }
             }
-            binding.channelList.addView(button)
+            findViewById<R.id.channelList.addView(button)
         }
         restoreFocus() // #95 Focus Restoration
     }
@@ -252,7 +252,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
         return when (event?.keyCode) {
             KeyEvent.KEYCODE_DPAD_LEFT -> { // #81
-                if (binding.sideMenu.isVisible) hideMenu() else switchChannel(-1)
+                if (findViewById<R.id.sideMenu.isVisible) hideMenu() else switchChannel(-1)
                 true
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> { // #81
@@ -287,12 +287,12 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     }
 
     private fun toggleMenu() {
-        if (binding.sideMenu.isVisible) hideMenu() else showMenu()
+        if (findViewById<R.id.sideMenu.isVisible) hideMenu() else showMenu()
     }
 
     private fun showMenu() {
-        binding.sideMenu.isVisible = true
-        binding.sideMenu.animate()
+        findViewById<R.id.sideMenu.isVisible = true
+        findViewById<R.id.sideMenu.animate()
             .translationX(0f)
             .setInterpolator(DecelerateInterpolator())
             .setDuration(300)
@@ -302,31 +302,31 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     }
 
     private fun hideMenu() {
-        binding.sideMenu.animate()
+        findViewById<R.id.sideMenu.animate()
             .translationX((-700f).dpToPx())
             .setInterpolator(AccelerateInterpolator())
             .setDuration(250)
-            .doOnEnd { binding.sideMenu.isVisible = false }
+            .doOnEnd { findViewById<R.id.sideMenu.isVisible = false }
             .start()
     }
 
     private fun showOSD(channelName: String) {
-        binding.osdChannelName.text = channelName
-        binding.osdChannelName.animate().alpha(1f).setDuration(200).start()
-        binding.osdControls.isVisible = true
+        findViewById<R.id.osdChannelName.text = channelName
+        findViewById<R.id.osdChannelName.animate().alpha(1f).setDuration(200).start()
+        findViewById<R.id.osdControls.isVisible = true
         uiHandler.removeCallbacks(autoHideRunnable)
         uiHandler.postDelayed({ hideOSD() }, 5000)
     }
 
     private fun hideOSD() {
-        binding.osdControls.animate().alpha(0f).setDuration(300).doOnEnd {
-            binding.osdControls.isVisible = false
+        findViewById<R.id.osdControls.animate().alpha(0f).setDuration(300).doOnEnd {
+            findViewById<R.id.osdControls.isVisible = false
         }.start()
     }
 
     private fun hideUI() {
-        if (binding.sideMenu.isVisible) hideMenu()
-        if (binding.osdControls.isVisible) hideOSD()
+        if (findViewById<R.id.sideMenu.isVisible) hideMenu()
+        if (findViewById<R.id.osdControls.isVisible) hideOSD()
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
@@ -340,8 +340,8 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
 
     private fun handleBackPress() {
         when {
-            binding.sideMenu.isVisible -> hideMenu()
-            binding.osdControls.isVisible -> hideOSD()
+            findViewById<R.id.sideMenu.isVisible -> hideMenu()
+            findViewById<R.id.osdControls.isVisible -> hideOSD()
             else -> {
                 // #40 Exit Confirmation
                 AlertDialog.Builder(this)
@@ -358,7 +358,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     }
 
     private fun restoreFocus() {
-        binding.channelList.getChildAt(focusRestoreIndex)?.requestFocus()
+        findViewById<R.id.channelList.getChildAt(focusRestoreIndex)?.requestFocus()
     }
 
     private fun saveSliderValue(key: String, value: Int) {
@@ -367,7 +367,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
     }
 
     private fun loadPreferences() {
-        binding.urlInput.setText(prefs.getString("last_url", ""))
+        findViewById<R.id.urlInput.setText(prefs.getString("last_url", ""))
         sliderValues["volume"] = prefs.getInt("volume", 50)
         // Load other sliders...
     }
@@ -381,7 +381,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
 
     private fun hideKeyboard() {
         val imm = getSystemService<InputMethodManager>()
-        imm?.hideSoftInputFromWindow(binding.urlInput.windowToken, 0)
+        imm?.hideSoftInputFromWindow(findViewById<R.id.urlInput.windowToken, 0)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -391,7 +391,7 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
 
     private fun handleIntent(intent: Intent?) {
         intent?.dataString?.let { url ->
-            binding.urlInput.setText(url)
+            findViewById<R.id.urlInput.setText(url)
             scanM3U()
         }
     }
@@ -411,10 +411,10 @@ class MainActivity : AppCompatActivity(), PlaybackListener, MediaPlayer.EventLis
                 playerEngine.smartReconnect()
             }
             MediaPlayer.Event.Buffering -> {
-                binding.statusText.text = getString(R.string.buffering)
+                findViewById<R.id.statusText.text = getString(R.string.buffering)
             }
             MediaPlayer.Event.Playing -> {
-                binding.statusText.text = "Odtwarzanie"
+                findViewById<R.id.statusText.text = "Odtwarzanie"
             }
         }
     }
