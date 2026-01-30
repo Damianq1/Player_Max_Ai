@@ -12,16 +12,10 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-        
-        // FULLY DISABLE BACKUP
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            minifyEnabled false
-        }
-        release {
             minifyEnabled false
         }
     }
@@ -34,5 +28,4 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core:1.12.0'
 }

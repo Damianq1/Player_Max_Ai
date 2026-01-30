@@ -1,4 +1,4 @@
-name: 🎬 SIMPLE BUILD (Full Clean + APK)
+name: 🎬 ULTRA CLEAN BUILD
 
 on:
   push:
@@ -22,22 +22,20 @@ jobs:
     - name: 🛠️ Android SDK
       uses: android-actions/setup-android@v3
       
-    - name: 🧹 FULL CLEAN (usuwa backup_rules.xml cache!)
+    - name: 💥 TOTAL CLEAN
       run: |
-        rm -rf app/build .gradle
+        rm -rf app/build .gradle build/
+        find . -name "backup_rules.xml" -delete 2>/dev/null || true
         chmod +x gradlew
-        ./gradlew clean --no-daemon
         
-    - name: 🏗️ BUILD DEBUG APK
-      run: |
-        ./gradlew clean assembleDebug --warning-mode none
-        echo "=== APK FILES ==="
-        find app/build/outputs -name "*.apk" || echo "NO APK"
+    - name: 🧹 Gradle Clean
+      run: ./gradlew clean --no-daemon
+        
+    - name: 🏗️ BUILD APK
+      run: ./gradlew assembleDebug --warning-mode none
         
     - name: 📤 UPLOAD APK
       uses: actions/upload-artifact@v4
       with:
         name: Ultimate_Player_APKs
-        path: |
-          app/build/outputs/**/*.apk
-        if-no-files-found: ignore
+        path: app/build/outputs/**/*.apk
