@@ -1,4 +1,4 @@
-name: 🎬 Ultimate Player - BUILD + SIGN + RELEASE
+name: 🎬 ULTIMATE BUILD + SIGN + RELEASE
 
 on:
   push:
@@ -6,33 +6,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-sign-release:
+  complete:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       
     steps:
-    # 1. Checkout
     - name: 📥 Checkout
       uses: actions/checkout@v4
       
-    # 2. JDK
-    - name: ☕ Setup JDK 17
+    - name: ☕ JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         
-    # 3. Android SDK  
-    - name: 🛠️ Setup Android SDK
+    - name: 🛠️ Android SDK
       uses: android-actions/setup-android@v3
       
-    # 4. Gradle permissions
-    - name: 🔧 Gradle permissions
+    - name: 🔧 Permissions
       run: chmod +x gradlew
       
-    # 5. Cache
-    - name: 📦 Cache Gradle
+    - name: 📦 Gradle cache
       uses: actions/cache@v4
       with:
         path: |
@@ -40,75 +35,66 @@ jobs:
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         
-    # ✅ 6. BUILD APK (NAJPIERW!)
-    - name: 🏗️ Build Release APK
-      run: ./gradlew clean assembleRelease
-      
-    # 7. DEBUG - pokaż wszystkie APK
-    - name: 🔍 DEBUG - List APK files
+    # BUILD PIERWSZY!
+    - name: 🏗️ CLEAN + BUILD
       run: |
-        echo "📁 All APK locations:"
-        find . -name "*.apk" -type f || echo "No APK found"
-        echo "📁 Release folder:"
-        ls -la app/build/outputs/apk/release/ || echo "Release dir missing"
-        echo "📁 All outputs:"
-        find app/build/outputs -type f | head -20 || echo "No outputs"
+        ./gradlew clean
+        ./gradlew assembleRelease
         
-    # 8. Keystore (dopiero po buildzie!)
-    - name: 🔐 Decode Keystore
+    # DEBUG - pokaż APK
+    - name: 🔍 SHOW APK FILES
+      run: |
+        echo "=== APK LOCATIONS ==="
+        find app/build -name "*.apk" || echo "NO APK"
+        ls -la app/build/outputs/apk/ || true
+        ls -la app/build/outputs/apk/release/ || true
+        
+    # Keystore DOPIERO PO BUILDZIE
+    - name: 🔐 Keystore
       env:
         KEYSTORE_BASE64: ${{ secrets.KEystore_BASE64 }}
       run: |
         echo "$KEYSTORE_BASE64" | base64 --decode > ultimate.keystore
-        ls -la ultimate.keystore
         
-    # ✅ 9. SIGN APK (dopiero jak istnieje!)
-    - name: 🔐 Sign APK
+    # SIGNING
+    - name: 🔐 SIGN APK
       env:
-        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        STORE_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        KEY_PASS: ${{ secrets.KEY_PASSWORD }}
       run: |
-        # Znajdź dokładnie unsigned APK
-        APK=$(find app/build/outputs/apk -name "app-release-unsigned.apk" -type f | head -1)
-        if [ -z "$APK" ]; then
-          echo "❌ No unsigned APK found!"
-          find app/build/outputs -name "*.apk" || true
-          exit 1
-        fi
-        echo "✅ Signing: $APK"
+        # Znajdź APK (dokładnie)
+        APK=$(find app/build/outputs/apk -name "*release*.apk" | head -1)
+        [ -n "$APK" ] || { echo "❌ NO APK!"; exit 1; }
+        echo "✅ Found APK: $APK"
         
         # Sign
         jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-          -keystore ultimate.keystore -storepass "$STORE_PASSWORD" \
-          "$APK" "$KEY_ALIAS" <<< "$KEY_PASSWORD"
+          -keystore ultimate.keystore -storepass "$STORE_PASS" \
+          "$APK" "$KEY_ALIAS" <<< "$KEY_PASS"
           
         # Align
-        zipalign -v -p 4 "$APK" "Ultimate_Player_v1.0.0-signed.apk"
-        ls -la Ultimate_Player_v1.0.0-signed.apk
+        zipalign -v 4 "$APK" Ultimate_Player_v1.0.0-signed.apk
         
-    # 10. Upload
-    - name: 📤 Upload ALL files
+    # UPLOAD
+    - name: 📤 Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Ultimate_Player_v1.0.0-signed
+        name: Ultimate_Player_SIGNED_v1.0.0
         path: |
           Ultimate_Player_v1.0.0-signed.apk
           app/build/outputs/apk/**/*.apk
-          ultimate.keystore
           
-    # 11. Release
+    # RELEASE
     - name: 🚀 GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v1.0.0
-        name: 🎬 Ultimate Player v1.0.0 SIGNED
+        name: 🎬 Ultimate Player v1.0.0
         body: |
           🎬 **Ultimate Player v1.0.0** - 100 FUNKCJI!
-          ✅ Build + Sign + Release automat
-          ✅ LibVLC + HW Acceleration
-          ✅ Android TV/Phone/Box
-        files: |
-          Ultimate_Player_v1.0.0-signed.apk
+          ✅ LibVLC + Android TV/Phone
+          ✅ M3U + Guardians + Sliders
+        files: Ultimate_Player_v1.0.0-signed.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
