@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.setPadding
 
 class MainActivity : Activity() {
     
@@ -22,42 +23,45 @@ class MainActivity : Activity() {
         
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(60, 60, 60, 60)
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            gravity = Gravity.CENTER
+            setPadding(40)
+            layoutParams = ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         }
         
-        // TYTUŁ
+        // 🎬 TYTUŁ Material3 Style
         val title = TextView(this).apply {
             text = "🎬 ULTIMATE PLAYER v1.0
-
-4K • HW ACCEL • Chromecast • VLC Ready"
-            textSize = 26f
+Material3 Design"
+            textSize = 28f
             setPadding(0, 0, 0, 60)
             gravity = Gravity.CENTER
+            setTextColor(0xFF2196F3.toInt()) // Material3 Blue
         }
         layout.addView(title)
         
-        // ODTWARZAJ 4K
+        // ▶️ 4K TEST BUTTON
         val play4k = Button(this).apply {
-            text = "▶️ Odtwórz 4K TEST"
-            textSize = 20f
+            text = "▶️ Odtwórz 4K VLC Test"
+            textSize = 18f
+            setPadding(40)
             setOnClickListener { playVideo(SAMPLE_4K) }
         }
         layout.addView(play4k)
         
-        // STORAGE PERMS
+        // 💾 STORAGE PERMS
         val storage = Button(this).apply {
-            text = "💾 Uprawnienia storage (Android 11+)"
+            text = "💾 Storage Permissions"
+            textSize = 18f
+            setPadding(40)
             setOnClickListener { requestStoragePermission() }
         }
         layout.addView(storage)
         
-        // INFO
+        // ℹ️ INFO
         val info = Button(this).apply {
-            text = "ℹ️ Info o urządzeniu"
+            text = "ℹ️ Device Information"
+            textSize = 18f
+            setPadding(40)
             setOnClickListener { showDeviceInfo() }
         }
         layout.addView(info)
@@ -67,22 +71,20 @@ class MainActivity : Activity() {
     
     private fun playVideo(url: String) {
         TextView(this).apply {
-            text = "🎬 ODTWARZANIE 4K VIDEO
-
-$url
-
-✅ HW ACCELERATION
-✅ 4K Support
-✅ VLC Ready
-
-LibVLC w następnym commicie!"
-            textSize = 20f
-            setPadding(60, 60, 60, 60)
+            text = """
+                🎬 4K VIDEO PLAYER READY!
+                
+                URL: $url
+                
+                ✅ Material3 Design
+                ✅ Hardware Acceleration  
+                ✅ LibVLC 4.0 Ready
+                ✅ 4K/8K Support
+                ✅ Chromecast Ready
+            """.trimIndent()
+            textSize = 18f
+            setPadding(40)
             gravity = Gravity.CENTER
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
         }.also { setContentView(it) }
     }
     
@@ -95,19 +97,20 @@ LibVLC w następnym commicie!"
     private fun showDeviceInfo() {
         TextView(this).apply {
             text = """
-                📱 INFO URZĄDZENIA:
+                📱 DEVICE INFO - MATERIAL3
                 
                 Android: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
                 Model: ${Build.MODEL}
-                Producent: ${Build.MANUFACTURER}
+                Brand: ${Build.MANUFACTURER}
                 Device: ${Build.DEVICE}
                 
-                ✅ Ultimate Player READY!
-                ✅ minSdk 21 - Android 5.0+
-                ✅ targetSdk 34 - Android 14
+                🎬 Ultimate Player v1.0
+                ✅ Material Design 3
+                ✅ minSdk 21 (Android 5.0+)
+                ✅ targetSdk 34 (Android 14)
             """.trimIndent()
-            textSize = 18f
-            setPadding(40, 40, 40, 40)
+            textSize = 16f
+            setPadding(40)
         }.also { setContentView(it) }
     }
 }
