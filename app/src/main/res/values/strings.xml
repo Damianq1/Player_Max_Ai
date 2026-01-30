@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">Ultimate Player</string>
-    <string name="scan_m3u">Skanuj M3U</string>
-    <string name="status_ready">Gotowy do skanowania...</string>
-    <string name="channels_found">Znaleziono %d kanałów</string>
-    <string name="scan_error">Błąd skanowania: %s</string>
-    <string name="exit_confirm">Wyjść z Ultimate Player?</string>
-    <string name="low_battery">Niski poziom baterii!</string>
-    <string name="buffering">Buforowanie...</string>
-    <string name="reconnecting">Ponowne łączenie...</string>
-    <string name="build_version">Ultimate v1.0.0</string>
 </resources>

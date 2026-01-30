@@ -1,69 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.playermaxai">
-
-    <!-- FILAR I: Uprawnienia sieciowe + WakeLock (14-15, 12-13) -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    <uses-feature android:name="android.software.leanback" android:required="false" />
-    <uses-feature android:name="android.hardware.type.television" android:required="false" />
-
+    
     <application
-        android:name=".MainActivity"
-        android:allowBackup="false"
-        android:fullBackupContent="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.UltimatePlayer"
-        android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:hardwareAccelerated="true"
-        tools:targetApi="31">
-
-        <!-- Główna aktywność (Landscape Lock #16, StayAwake #13) -->
+        android:allowBackup="true"
+        android:label="Ultimate Player"
+        android:theme="@style/Theme.AppCompat">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:stayAwake="true"
-            android:showWhenLocked="true"
-            android:turnScreenOn="true"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden"
-            android:theme="@style/Theme.UltimatePlayer.NoActionBar">
-            
-            <!-- Intent dla Direct URL Play (#98) -->
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
-            
-            <!-- Direct URL Playback (#98) -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:mimeType="video/*" />
-                <data android:mimeType="audio/*" />
-                <data android:mimeType="application/x-mpegurl" />
-                <data android:mimeType="application/vnd.apple.mpegurl" />
             </intent-filter>
         </activity>
-
-        <!-- Network Guard Service (#61-62) -->
-        <service
-            android:name=".core.NetworkGuardService"
-            android:foregroundServiceType="mediaPlayback"
-            android:exported="false" />
-
     </application>
 </manifest>
