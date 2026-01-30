@@ -35,9 +35,15 @@ android {
 }
 
 dependencies {
-    // ✅ DODAJ TYLKO TO - reszta zostaje!
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+    // ✅ MATERIAL BOM - gwarantuje kompatybilność!
+    implementation(platform("com.google.android.material:material-bom:2024.12.01"))
+    
+    // ✅ Material3 + AppCompat z BOM
+    implementation("com.google.android.material:material")
+    implementation("androidx.appcompat:appcompat")
+    implementation("androidx.core:core-ktx")
+    implementation("androidx.activity:activity")
+    
+    // ✅ Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
 }
