@@ -1,5 +1,10 @@
 buildscript {
     ext.kotlin_version = "1.9.10"
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
@@ -7,5 +12,8 @@ buildscript {
 }
 
 allprojects {
-    // ZERO repositories - wszystko w settings.gradle.kts
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
