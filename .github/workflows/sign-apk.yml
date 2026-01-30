@@ -1,0 +1,74 @@
+name: 🔐 AUTO SIGN + RELEASE APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: ☕ Setup JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: 📥 Download unsigned APKs
+      uses: actions/download-artifact@v4
+      with:
+        name: Ultimate_Player_ALL_APKs
+        
+    - name: 🔐 Decode + Setup Keystore
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEystore_BASE64 }}
+      run: |
+        echo "${KEYSTORE_BASE64}" | base64 -d > ultimate-player.keystore
+        echo "storePassword=ultimate123" > gradle.properties
+        echo "keyPassword=ultimate123" >> gradle.properties
+        echo "keyAlias=ultimatekey" >> gradle.properties
+        echo "storeFile=ultimate-player.keystore" >> gradle.properties
+        
+    - name: 🔐 Sign ALL APKs
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        for apk in *.apk; do
+          echo "Signing $apk..."
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore ultimate-player.keystore \
+            -storepass ultimate123 \
+            "$apk" ultimatekey <<< "ultimate123"
+            
+          zipalign -v -p 4 "$apk" "${apk%.apk}_signed.apk"
+        done
+        
+    - name: 📤 Upload SIGNED APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: Ultimate_Player_SIGNED_APKs
+        path: "*_signed.apk"
+        
+    - name: 🚀 Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v1.0.0-signed
+        name: 🎬 Ultimate Player v1.0.0 SIGNED
+        body: |
+          🎬 **Ultimate Player v1.0.0 - PEŁNY RELEASE!**
+          
+          ✅ 100 funkcji IPTV Player
+          ✅ LibVLC 3.6 + HW Acceleration
+          ✅ Android TV/Phone/Box
+          ✅ Podpisany APK gotowy do dystrybucji
+          
+          📱 **Install:** adb install Ultimate_Player_*_signed.apk
+        files: "*_signed.apk"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
