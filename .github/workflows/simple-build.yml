@@ -1,0 +1,40 @@
+name: 🎬 SIMPLE BUILD (Ignore Warnings)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+      
+    - name: ☕ JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: 🛠️ Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: 🔧 Permissions
+      run: chmod +x gradlew
+      
+    - name: 🏗️ BUILD DEBUG (ignore warnings)
+      run: |
+        ./gradlew clean assembleDebug --warning-mode none
+        echo "=== APK FILES ==="
+        find app/build/outputs -name "*.apk" || echo "NO APK"
+        
+    - name: 📤 UPLOAD APK (debug + release)
+      uses: actions/upload-artifact@v4
+      with:
+        name: Ultimate_Player_APKs
+        path: |
+          app/build/outputs/**/*.apk
+        if-no-files-found: ignore
