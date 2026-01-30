@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:backupAgent="false"
+        android:dataExtractionRules="@xml/empty_backup"
+        tools:ignore="MissingDefaultResource"
         android:label="Ultimate Player"
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         

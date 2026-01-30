@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.playermaxai'  // ← TUTAJ package name!
+    namespace 'com.playermaxai'
     compileSdk 34
 
     defaultConfig {
@@ -12,13 +12,20 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        
+        // FULLY DISABLE BACKUP
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
         }
     }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -27,4 +34,5 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.12.0'
 }
