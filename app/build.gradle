@@ -17,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false  # Tymczasowo wyłączone
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     
-    // ✅ STABILNY LibVLC 3.6.0 z Maven Central
+    // LibVLC 3.6.0 z Maven Central
     implementation 'org.videolan.android:libvlc-all:3.6.0'
     
     implementation 'androidx.activity:activity-ktx:1.8.2'
