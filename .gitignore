@@ -1,12 +1,7 @@
-# Android Studio
-.gradle/
-build/
+# Build
+/build
+/app/build
+.gradle
 local.properties
-.idea/
+.idea
 .DS_Store
-captures/
-.externalNativeBuild/
-
-# Termux build artifacts
-app/build/
-*.apk
