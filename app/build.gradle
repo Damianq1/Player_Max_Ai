@@ -39,3 +39,12 @@ dependencies {
     implementation 'org.videolan.android:libvlc-all:3.6.0'
     implementation 'androidx.activity:activity-ktx:1.8.2'
 }
+
+kotlin {
+    // Emergency disable BuildFlow dla Gradle 9.4
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += ["-Xno-verify"]
+        }
+    }
+}
