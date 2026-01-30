@@ -19,6 +19,9 @@ android {
         debug {
             minifyEnabled false
         }
+        release {
+            minifyEnabled false
+        }
     }
     
     compileOptions {
@@ -29,15 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    
-    packagingOptions {
-        exclude '**/backup_rules.xml'
-        pickFirst '**/libc++_shared.so'
-    }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core:1.12.0'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.10'
 }
