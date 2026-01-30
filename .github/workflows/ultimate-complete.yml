@@ -1,0 +1,97 @@
+name: 🎬 Ultimate Player - BUILD + SIGN + RELEASE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-sign-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+      
+    - name: ☕ Setup JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: 🛠️ Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: 🔧 Gradle permissions
+      run: chmod +x gradlew
+      
+    - name: 📦 Cache Gradle
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        
+    - name: 🏗️ Build Release APK
+      run: ./gradlew assembleRelease
+      
+    - name: 🔍 List outputs
+      run: find app/build/outputs/apk -name "*.apk" | head -10
+      
+    - name: 🔐 Decode Keystore
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEystore_BASE64 }}
+      run: |
+        echo "$KEYSTORE_BASE64" | base64 --decode > ultimate.keystore
+        
+    - name: 🔐 Sign APK
+      env:
+        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        # Znajdź APK
+        APK=$(find app/build/outputs/apk -name "app-release*.apk" | head -1)
+        echo "Signing: $APK"
+        
+        # Sign
+        jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+          -keystore ultimate.keystore -storepass "$STORE_PASSWORD" \
+          "$APK" "$KEY_ALIAS" <<< "$KEY_PASSWORD"
+          
+        # Align  
+        zipalign -v -p 4 "$APK" "Ultimate_Player_v1.0.0-signed.apk"
+        
+    - name: 📤 Upload SIGNED APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Ultimate_Player_v1.0.0-signed
+        path: |
+          Ultimate_Player_v1.0.0-signed.apk
+          app/build/outputs/apk/**/*.apk
+          
+    - name: 🚀 Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v1.0.0
+        name: 🎬 Ultimate Player v1.0.0 - SIGNED
+        body: |
+          🎬 **Ultimate Player v1.0.0** - **100 FUNKCJI IPTV PLAYER**
+          
+          ✅ LibVLC 3.6 + HW Acceleration (4K/HDR)
+          ✅ Android TV/Phone/Box (DPAD + Focus)
+          ✅ M3U Parser + Channel Scanner  
+          ✅ Guardians (Freeze Detect + Auto Reconnect)
+          ✅ Sliders (Brightness/Contrast/Saturation/Volume)
+          
+          📱 **Install:** adb install Ultimate_Player_v1.0.0-signed.apk
+          
+          **Test M3U:** http://iptv.example.com/playlist.m3u
+        files: |
+          Ultimate_Player_v1.0.0-signed.apk
+          app/build/outputs/apk/**/*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
