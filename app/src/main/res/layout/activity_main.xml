@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_transparent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".MainActivity">
+
+    <!-- 21. Z-Order FrameLayout: Video Layer (BOTTOM #22) -->
+    <SurfaceView
+        android:id="@+id/video_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF000000"
+        android:keepScreenOn="true" />
+
+    <!-- 23. Side Menu Layer (MIDDLE) - TranslationX Animation #27 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/side_menu"
+        android:layout_width="600dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:alpha="0.95"
+        android:background="@color/black_semi"
+        android:clipToPadding="false"
+        android:elevation="16dp"
+        android:paddingStart="24dp"
+        android:paddingTop="32dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="32dp"
+        android:translationX="-700dp"
+        android:visibility="gone">
+
+        <!-- 29. Vertical Channel List + Padding/Margin Logic #39 -->
+        <LinearLayout
+            android:id="@+id/channel_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clipToPadding="false" />
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 24. Setup Screen Layer (TOP) - Initial screen -->
+    <LinearLayout
+        android:id="@+id/setup_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_semi"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="48dp"
+        android:visibility="visible">
+
+        <!-- Ultimate Player Logo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:text="@string/build_version"
+            android:textColor="@color/yellow_primary"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!-- 34. Status Text Label -->
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/status_ready"
+            android:textColor="@color/yellow_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- 35. URL Input Field + Hint System #36 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="Wklej link M3U playlisty"
+            app:boxBackgroundColor="@color/gray_dark"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/yellow_primary"
+            app:hintTextColor="@color/yellow_primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/url_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="https://example.com/playlist.m3u"
+                android:inputType="textUri"
+                android:padding="20dp"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Scan Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scan_button"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/scan_m3u"
+            android:textSize="20sp"
+            app:backgroundTint="@color/yellow_primary"
+            app:cornerRadius="24dp"
+            app:icon="@android:drawable/ic_menu_search"
+            app:iconTint="@color/black_transparent" />
+
+        <!-- Build Info (#60) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ultimate Player v1.0.0"
+            android:textColor="@color/gray_light"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- 40. OSD + Controls Layer (NAJWAŻNIEJSZE dla TV!) -->
+    <com.google.android.material.bottomsheet.BottomSheetLayout
+        android:id="@+id/osd_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black_semi"
+        android:elevation="24dp"
+        android:padding="24dp"
+        android:visibility="gone">
+
+        <!-- 91. OSD Channel Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/osd_channel_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"
+                android:text="Kanał"
+                android:textColor="@color/yellow_primary"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:alpha="0.0" />
+
+            <!-- Sliders Container -->
+            <LinearLayout
+                android:id="@+id/sliders_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <!-- 85-88. Brightness/Contrast/Saturation/Volume Sliders -->
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Jasność" android:textColor="@color/yellow_primary" android:textSize="16sp" />
+                    <SeekBar android:id="@+id/brightness_seekbar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="3" android:focusable="true" />
+                </LinearLayout>
+
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Kontrast" android:textColor="@color/yellow_primary" android:textSize="16sp" />
+                    <SeekBar android:id="@+id/contrast_seekbar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="3" android:focusable="true" />
+                </LinearLayout>
+
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Nasycenie" android:textColor="@color/yellow_primary" android:textSize="16sp" />
+                    <SeekBar android:id="@+id/saturation_seekbar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="3" android:focusable="true" />
+                </LinearLayout>
+
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Głośność" android:textColor="@color/yellow_primary" android:textSize="16sp" />
+                    <SeekBar android:id="@+id/volume_seekbar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="3" android:focusable="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 91. Quick Channel Switch CH+/- (#91) -->
+            <LinearLayout
+                android:id="@+id/channel_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/prev_channel_btn"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="120dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="CH-"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/yellow_primary"
+                    app:cornerRadius="20dp"
+                    android:focusable="true" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/next_channel_btn"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="120dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="24dp"
+                    android:text="CH+"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/yellow_primary"
+                    app:cornerRadius="20dp"
+                    android:focusable="true" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/menu_toggle_btn"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="140dp"
+                    android:layout_height="64dp"
+                    android:text="☰ Menu"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/yellow_primary"
+                    app:cornerRadius="20dp"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.bottomsheet.BottomSheetLayout>
+
+</FrameLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Focused state (TV D-Pad #32) -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/yellow_primary" />
+            <stroke android:width="4dp" android:color="@color/yellow_primary" />
+            <corners android:radius="16dp" />
+            <padding android:left="16dp" android:top="12dp" 
+                     android:right="16dp" android:bottom="12dp" />
+        </shape>
+    </item>
+    
+    <!-- Pressed/Hover state (#33) -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/yellow_dark" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    
+    <!-- Normal state -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/gray_dark" />
+            <stroke android:width="2dp" android:color="@color/gray_light" />
+            <corners android:radius="16dp" />
+            <padding android:left="16dp" android:top="12dp" 
+                     android:right="16dp" android:bottom="12dp" />
+        </shape>
+    </item>
+</selector>
