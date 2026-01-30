@@ -8,9 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      
+    
     steps:
     - name: 📥 Checkout
       uses: actions/checkout@v4
@@ -21,8 +19,11 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         
-    - name: 🔧 Setup Gradle
-      uses: gradle/gradle-build-action@v3
+    - name: 🛠️ Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: 🔧 Grant gradlew permissions
+      run: chmod +x gradlew
       
     - name: 📦 Cache Gradle
       uses: actions/cache@v4
@@ -33,31 +34,10 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         
     - name: 🏗️ Build Release APK
-      run: ./gradlew assembleRelease --stacktrace --info
-      
-    - name: 📱 Rename APK
-      run: |
-        mv app/build/outputs/apk/release/app-release-unsigned.apk \
-        "Ultimate_Player_v1.0.0_$(date +%Y%m%d_%H%M%S).apk"
+      run: ./gradlew assembleRelease --stacktrace
       
     - name: 📤 Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: Ultimate_Player_v1.0.0.apk
-        path: Ultimate_Player_v1.0.0_*.apk
-        retention-days: 90
-        
-    - name: 🌟 Release (on push main)
-      if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v1.0.0
-        name: Ultimate Player v1.0.0
-        body: |
-          🎬 **Ultimate Player v1.0.0 - 100 FUNKCJI!**
-          
-          ✅ LibVLC 4.0.0 + HW Acceleration
-          ✅ Android TV / Phone / Box
-          ✅ M3U Parser + Smart Guardians
-          ✅ DPAD + Sliders + Gestures
-        files: Ultimate_Player_v1.0.0_*.apk
+        path: app/build/outputs/apk/release/app-release-unsigned.apk

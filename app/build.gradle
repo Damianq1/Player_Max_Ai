@@ -5,49 +5,41 @@ plugins {
 
 android {
     namespace 'com.playermaxai'
-    compileSdk 36  // Android 16 support
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.playermaxai"
-        minSdk 24     // Android 7+ (stabilne LibVLC)
-        targetSdk 36
+        minSdk 21
+        targetSdk 34
         versionCode 100
         versionName "Ultimate 1.0.0"
-        
-        ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'
-        }
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false  # Tymczasowo wyłączone
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
         }
     }
     
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '1.8'
     }
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.15.0'
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'com.google.android.material:material:1.12.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     
-    // ✅ LibVLC NOWE Z Maven Central 2026
-    implementation 'org.videolan.android:libvlc-all:4.0.0'
+    // ✅ STABILNY LibVLC 3.6.0 z Maven Central
+    implementation 'org.videolan.android:libvlc-all:3.6.0'
     
-    // TV + Material3
-    implementation 'androidx.tv:tv-foundation:1.1.0-alpha01'
-    implementation 'androidx.leanback:leanback:1.1.0'
-    implementation 'androidx.activity:activity-ktx:1.10.1'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
 }
