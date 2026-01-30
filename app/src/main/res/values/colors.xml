@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black_transparent">#CC000000</color>
-    <color name="black_semi">#80000000</color>
-    <color name="yellow_primary">#FFFF00</color>
-    <color name="yellow_dark">#CCCC00</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="gray_dark">#FF333333</color>
-    <color name="gray_light">#FF666666</color>
+    <color name="ic_launcher_background">#FFFFFFFF</color>
 </resources>
