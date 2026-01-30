@@ -35,15 +35,10 @@ android {
 }
 
 dependencies {
-    // ✅ MATERIAL BOM - gwarantuje kompatybilność!
+    // ✅ Material BOM - rozwiązuje WSZYSTKIE style errors
     implementation(platform("com.google.android.material:material-bom:2024.12.01"))
-    
-    // ✅ Material3 + AppCompat z BOM
     implementation("com.google.android.material:material")
     implementation("androidx.appcompat:appcompat")
     implementation("androidx.core:core-ktx")
-    implementation("androidx.activity:activity")
-    
-    // ✅ Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
 }
