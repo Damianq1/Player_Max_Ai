@@ -1,4 +1,4 @@
-name: 🎬 SIMPLE BUILD (Ignore Warnings)
+name: 🎬 SIMPLE BUILD (Full Clean + APK)
 
 on:
   push:
@@ -22,16 +22,19 @@ jobs:
     - name: 🛠️ Android SDK
       uses: android-actions/setup-android@v3
       
-    - name: 🔧 Permissions
-      run: chmod +x gradlew
-      
-    - name: 🏗️ BUILD DEBUG (ignore warnings)
+    - name: 🧹 FULL CLEAN (usuwa backup_rules.xml cache!)
+      run: |
+        rm -rf app/build .gradle
+        chmod +x gradlew
+        ./gradlew clean --no-daemon
+        
+    - name: 🏗️ BUILD DEBUG APK
       run: |
         ./gradlew clean assembleDebug --warning-mode none
         echo "=== APK FILES ==="
         find app/build/outputs -name "*.apk" || echo "NO APK"
         
-    - name: 📤 UPLOAD APK (debug + release)
+    - name: 📤 UPLOAD APK
       uses: actions/upload-artifact@v4
       with:
         name: Ultimate_Player_APKs
