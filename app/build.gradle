@@ -17,10 +17,10 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            minifyEnabled = false  // ← BEZ 'is' !
         }
         release {
-            isMinifyEnabled = false
+            minifyEnabled = false  // ← BEZ 'is' !
         }
     }
     
