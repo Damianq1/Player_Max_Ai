@@ -10,7 +10,7 @@
         android:dataExtractionRules="@xml/backup_rules"
         android:label="Ultimate Player"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
-        
+        <!-- Wszystko zostaje bez zmian -->
         <activity 
             android:name=".MainActivity"
             android:exported="true"
@@ -21,6 +21,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
     </application>
 </manifest>
