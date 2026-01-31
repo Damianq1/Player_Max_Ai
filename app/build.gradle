@@ -1,48 +1,18 @@
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-}
-
+plugins { id 'com.android.application' }
 android {
-    namespace = "com.playermaxai"
-    compileSdk = 34
-
+    compileSdk 35
     defaultConfig {
-        applicationId = "com.playermaxai"
-        minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId "com.damianq1.playermaxai"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
     }
-
-    buildTypes {
-        release {
-            minifyEnabled = false
-        }
-    }
-    
-    buildFeatures {
-        viewBinding true
-    }
-    
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
-
 dependencies {
-    // Material BOM - kompatybilne wersje
-    implementation(platform("com.google.android.material:material-bom:1.12.0"))
-    implementation("com.google.android.material:material")
-    implementation("androidx.appcompat:appcompat")
-    implementation("androidx.core:core-ktx")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    
-    // ❌ ZERO viewbinding dependency - włączone w android.buildFeatures!
+    implementation 'org.videolan.android:libvlc-all:3.6.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }

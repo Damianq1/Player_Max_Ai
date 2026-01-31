@@ -1,11 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
-    <SurfaceView
-        android:id="@+id/video_surface"
+    <org.videolan.libvlc.util.VLCVideoLayout
+        android:id="@+id/video_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/side_menu"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/black_semi"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/url_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wklej link M3U / EPG"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/scan_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Skanuj"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/yellow_accent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_power_saving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="Eco OFF"
+                android:textOn="Eco ON"
+                android:backgroundTint="@color/yellow_accent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="A-Z"
+                android:textOn="↑ Fav"
+                android:backgroundTint="@color/yellow_accent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="Dark"
+                android:textOn="Light"
+                android:backgroundTint="@color/yellow_accent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btn_aspect"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Aspect: Auto"
+                android:backgroundTint="#444444" />
+
+            <Button
+                android:id="@+id/btn_rec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REC"
+                android:textColor="#FF0000"
+                android:backgroundTint="#330000" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_sleep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sleep Timer: OFF"
+            android:backgroundTint="#444444"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btn_backup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Backup / Restore"
+            android:backgroundTint="#444444"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ostatnio odtwarzane"
+            android:textColor="@color/yellow_accent"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+        <LinearLayout
+            android:id="@+id/recent_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ulubione / Grupy"
+            android:textColor="@color/yellow_accent"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/groups_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/diag_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:textColor="#88FFFFFF"
+            android:textSize="12sp"
+            android:background="#22000000"
+            android:padding="8dp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/osd_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="80dp"
+        android:padding="28dp 56dp"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 </FrameLayout>
