@@ -1,5 +1,6 @@
 plugins { id 'com.android.application' }
 android {
+    namespace "com.damianq1.playermaxai"
     compileSdk 35
     defaultConfig {
         applicationId "com.damianq1.playermaxai"
