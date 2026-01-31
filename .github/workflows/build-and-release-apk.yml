@@ -25,17 +25,20 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease --stacktrace
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
+          name: PlayerMaxAi-latest-apk
           path: app/build/outputs/apk/release/app-release-unsigned.apk
+          retention-days: 7
 
       - name: Release APK
-        uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: Latest Release
+          name: Latest APK Build
+          prerelease: true
+          generate_release_notes: true
           files: app/build/outputs/apk/release/app-release-unsigned.apk
           overwrite: true

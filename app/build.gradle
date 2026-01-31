@@ -1,6 +1,10 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+}
+
 android {
     namespace "com.damianq1.playermaxai"
+
     compileSdk 35
     defaultConfig {
         applicationId "com.damianq1.playermaxai"
@@ -9,9 +13,17 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes { release { minifyEnabled false } }
-    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
+
 dependencies {
     implementation 'org.videolan.android:libvlc-all:3.6.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
