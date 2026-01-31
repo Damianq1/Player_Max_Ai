@@ -7,10 +7,45 @@ buildscript {
         classpath 'com.android.tools.build:gradle:8.5.2'
     }
 }
+
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
     }
+}
+EOFcat > app/build.gradle << 'EOF'
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace "com.damianq1.playermaxai"
+
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.damianq1.playermaxai"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'org.videolan.android:libvlc-all:3.6.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
