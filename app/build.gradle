@@ -1,11 +1,12 @@
 plugins {
-    id 'com.android.application' version '8.5.2' apply false
+    id 'com.android.application'
 }
 
 android {
     namespace "com.damianq1.playermaxai"
 
     compileSdk 35
+
     defaultConfig {
         applicationId "com.damianq1.playermaxai"
         minSdk 24
@@ -13,11 +14,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
